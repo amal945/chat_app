@@ -14,16 +14,22 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _showInputValues(){
+  @override
+  void dispose() {
+  _usernameController.dispose();
+  _emailController.dispose();
+  _passwordController.dispose();
+    super.dispose();
+  }
 
+  void _showInputValues(){
     String userName = _usernameController.text.trim();
     String password = _passwordController.text.trim();
     String email = _emailController.text.trim();
-
     print(" $userName $password $email");
-
-
   }
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 20,),
               _buildTextInput("Email", Icons.email_outlined, _emailController),
               SizedBox(height: 20,),
-              _buildTextInput("Password", Icons.lock, _passwordController),
+              _buildTextInput("Password", Icons.lock, _passwordController,isPassword: true),
               SizedBox(height: 20,),
               _buildRegisterButton(),
               SizedBox(height: 20,),
@@ -53,7 +59,9 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildLoginPrompt(){
     return Center(
       child: GestureDetector(
-        onTap: (){},
+        onTap: (){
+          _showInputValues();
+        },
         child:RichText(text: TextSpan(text: "Already have an account ? ",style: TextStyle(color: Colors.grey)
       ,  children: [
           TextSpan(
@@ -107,6 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
             obscureText: isPassword,
             decoration: InputDecoration(
               hintText: hint,
+              // suffixIcon: isPassword ? ,
               hintStyle: TextStyle(color: Colors.grey,),
               border: InputBorder.none
             ),
